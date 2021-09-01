@@ -1,0 +1,52 @@
+import pandas as pd
+import numpy as np
+from requests_html import HTML
+
+# read source code file
+with open('nba-team-values-2021-knicks-keep-top-spot-at-5-billion-warriors-bump-lakers-for-second-place') as html_file:
+    source = html_file.read()
+    html = HTML(html=source)
+
+# append the top teams to list
+topTeams = []
+team = html.find('h3')
+for x in range(0, 46):
+    topTeams.append(team[x].text)
+
+# reverse the list for clarity
+topTeams.reverse()
+
+# clean up by removing empty strings
+while("" in topTeams):
+    topTeams.remove("")
+
+#x= np.array(topTeams)
+
+df = pd.read_csv('warriors_hs.csv')
+
+# ORIGINALLY WE DID NOT CLEAN THE LIST
+# clean up the dataframe
+# df = df["top"].replace('', np.NaN)
+#
+# df = df["top"].dropna(axis=0)
+# df = df["top"].reset_index(drop=True)
+
+# # turn opponents and top teams into lists
+list_opp = df['Opponent'].tolist()
+
+# list_top = df["Team Name"].tolist()
+
+# create a list to spilt the strings
+# hs_opp = []
+# for i in list_opp:
+#     str_list = i.split()
+#     hs_opp.append(str_list)
+
+# top_list = []
+# for i in topTeams:
+#     str_list = i.split()
+#     top_list.append(str_list)
+
+print(topTeams,list_opp)
+
+print(list_opp[0] in topTeams[18])
